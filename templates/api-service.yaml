@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mec-energia-api
+  name: mec-energia-api
+spec:
+  ports:
+    - name: "api"
+      port: {{ .Values.api.port }}
+      targetPort: {{ .Values.api.port }}
+  selector:
+    app: mec-energia-api

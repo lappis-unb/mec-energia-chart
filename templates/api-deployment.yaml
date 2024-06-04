@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mec-energia-api
+  name: mec-energia-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mec-energia-api
+  template:
+    metadata:
+      labels:
+        app: mec-energia-api
+    spec:
+      restartPolicy: Always
+      containers:
+        - args:
+            - sh
+            - scripts/start.sh
+          # TODO: substituir por imagem Docker
+          image: mec-energia-api
+          name: mec-energia-api
+          ports:
+            - containerPort: {{ .Values.api.port }}
+              hostPort: {{ .Values.api.port }}
+              protocol: TCP
+          resources: {}
+          env:
+            - name: MEC_ENERGIA_URL
+              value: {{ .Values.host }}
+            - name: API_PORT
+              value: {{ .Values.api.port }}
+            - name: DJANGO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: DJANGO_SECRET_KEY
+                  name: {{ .Values.api.secretName }}
+            - name: ENVIRONMENT
+              value: {{ .Values.environment }}
+            - name: MEC_ENERGIA_EMAIL
+              valueFrom:
+                configMapKeyRef:
+                  key: MEC_ENERGIA_EMAIL
+                  name: {{ .Values.email.existingSecret.name }}
+            - name: MEC_ENERGIA_EMAIL_APP_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: MEC_ENERGIA_EMAIL_APP_PASSWORD
+                  name: {{ .Values.email.existingSecret.name }}
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_DB
+                  name: {{ .Values.db.existingSecret.name }}
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_HOST
+                  name: {{ .Values.db.existingSecret.name }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: {{ .Values.db.existingSecret.name }}
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_PORT
+                  name: {{ .Values.db.existingSecret.name }}
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_USER
+                  name: {{ .Values.db.existingSecret.name }}
+            - name: POSTGRES_VERSION
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_VERSION
+                  name: {{ .Values.db.existingSecret.name }}
+          volumeMounts:
+            - mountPath: /home/dev/mec-energia-api
+              name: mec-energia-api-claim
+      volumes:
+        - name: mec-energia-api-claim
+          persistentVolumeClaim:
+            claimName: mec-energia-api-claim

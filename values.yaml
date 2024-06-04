@@ -1,0 +1,25 @@
+environment: development
+host: mecenergia.lappis.rocks
+
+api:
+  port: 8000
+  secretName: mec-energia-api-secretkey
+
+db:
+  existingSecret:
+    name: "mec-energia-db-connection"
+    hostKey: "POSTGRES_HOST"
+    portKey: "POSTGRES_PORT"
+    databaseKey: "POSTGRES_NAME"
+    userKey: "POSTGRES_USER"
+    passwordKey: "POSTGRES_PASSWORD"
+    versionKey: "POSTGRES_VERSION"
+
+email:
+  existingSecret:
+    name: "mec-energia-email"
+    emailKey: "MEC_ENERGIA_EMAIL"
+    passwordKey: "MEC_ENERGIA_EMAIL_APP_PASSWORD"
+
+web:
+  port: 3000
