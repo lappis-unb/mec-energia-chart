@@ -19,8 +19,7 @@ spec:
         - args:
             - sh
             - scripts/start.sh
-          # TODO: substituir por imagem Docker
-          image: mec-energia-api
+          image: {{ .Values.api.image }}
           name: mec-energia-api
           ports:
             - containerPort: {{ .Values.api.port }}

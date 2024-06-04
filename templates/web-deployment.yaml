@@ -15,7 +15,7 @@ spec:
         app: mec-energia-web
     spec:
       containers:
-        - image: prod
+        - image: {{ .Values.web.image }}
           name: mec-energia-web
           ports:
             - containerPort: {{ .Values.web.port }}

@@ -4,6 +4,7 @@ host: mecenergia.lappis.rocks
 api:
   port: 8000
   secretName: mec-energia-api-secretkey
+  image: registry.gitlab.com/lappis-unb/projetos-energia/mec-energia/mec-energia-api:1.0.126
 
 db:
   existingSecret:
@@ -23,3 +24,4 @@ email:
 
 web:
   port: 3000
+  image: registry.gitlab.com/lappis-unb/projetos-energia/mec-energia/mec-energia-web:1.0.450
